@@ -14,9 +14,9 @@ class Person(models.Model):
 
 
 
-class points(models.Model):
-    owner_id = models.ForeignKey(Person,related_name="owner",on_delete = models.CASCADE)
-    reciever_id = models.ForeignKey(Person,related_name="reciever",on_delete=models.CASCADE)
+class Points(models.Model):
+    owner_id = models.ForeignKey(Person,related_name="owner_id",on_delete = models.CASCADE)
+    reciever_id = models.ForeignKey(Person,related_name="reciever_id",on_delete=models.CASCADE)
     points = models.CharField(max_length=30)
 
 

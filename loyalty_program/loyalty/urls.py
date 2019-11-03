@@ -14,6 +14,7 @@ urlpatterns = [
     # path('hello1/', views.HelloView1.as_view(), name='hello'),
 
     path('api-auth/',views.ExampleView.as_view(), name='index'),
-    path('person_detail/',views.person_detail),
+    path('login/',views.person_detail),
+    path('getPoints/',views.GetPoints.as_view(),name="getPoints")
     
 ]

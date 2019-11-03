@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from .models import Person
-from .serializers import PersonSerializer
+from .models import Person,Points
+from .serializers import PersonSerializer,PointSerializer
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
+from django.core import serializers
 
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
@@ -60,6 +61,20 @@ class ExampleView(APIView):
             'auth': request.auth,  # None
         }
         return Response(content)
+
+
+@permission_classes((permissions.AllowAny,))
+class GetPoints(APIView):
+    def get(self,request,format=None):
+        queryset = Points.objects.all()
+        queryset1 = Person.objects.all()
+        owner = request.GET['username']
+        uid = Person.objects.filter(username= owner).values("user_id")[0]["user_id"]
+        if owner is not None:
+            queryset = queryset.filter(owner_id=int(uid))
+        print(PointSerializer(queryset))
+        return Response(serializers.serialize('json',queryset))
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
