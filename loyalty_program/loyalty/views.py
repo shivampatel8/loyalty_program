@@ -75,6 +75,18 @@ class GetPoints(APIView):
         print(PointSerializer(queryset))
         return Response(serializers.serialize('json',queryset))
 
+@permission_classes((permissions.AllowAny,))
+class AllPoints(APIView):
+    def get(self,request,format=None):
+        queryset = Points.objects.all()
+        queryset1 = Person.objects.all()
+        owner = request.GET['username']
+        uid = Person.objects.filter(username= owner).values("user_id")[0]["user_id"]
+        if owner is not None:
+            queryset = queryset.filter(owner_id=int(uid))
+        print(PointSerializer(queryset))
+        return Response(serializers.serialize('json',queryset))
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
