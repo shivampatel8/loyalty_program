@@ -25,7 +25,7 @@ SECRET_KEY = '7^oqd3ylh5!4d%6%6&0_0+%dwl@!iypo4_ydvaay#(4$)w=dq('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://loyaltyprogram3039.herokuapp.com/']
+ALLOWED_HOSTS = ['https://loyalty30.herokuapp.com/']
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'loyalty.apps.LoyaltyConfig',
+    # 'loyalty.apps.LoyaltyConfig',
     'rest_framework',
     'loyalty',
     'herokuapp',
