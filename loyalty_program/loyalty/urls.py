@@ -15,6 +15,8 @@ urlpatterns = [
 
     path('api-auth/',views.ExampleView.as_view(), name='index'),
     path('login/',views.person_detail),
-    path('getPoints/',views.GetPoints.as_view(),name="getPoints")
+    path('getPoints/',views.GetPoints.as_view(),name="getPoints"),
+    path('allPoints/',views.AllPoints.as_view(),name="allPoints"),
+    path('addPoints/',views.AddPoints.as_view(),name="addPoints")
     
 ]

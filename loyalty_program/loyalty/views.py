@@ -68,8 +68,12 @@ class GetPoints(APIView):
     def get(self,request,format=None):
         queryset = Points.objects.all()
         queryset1 = Person.objects.all()
+        print(queryset)
+        print(queryset1)
         owner = request.GET['username']
+        print(owner)
         uid = Person.objects.filter(username= owner).values("user_id")[0]["user_id"]
+        print(uid)
         if owner is not None:
             queryset = queryset.filter(owner_id=int(uid))
         print(PointSerializer(queryset))
@@ -85,6 +89,29 @@ class AllPoints(APIView):
         if owner is not None:
             queryset = queryset.filter(owner_id=int(uid))
         print(PointSerializer(queryset))
+        return Response(serializers.serialize('json',queryset))
+
+@permission_classes((permissions.AllowAny,))
+class AddPoints(APIView):
+    def get(self,request,format=None):
+        queryset = Points.objects.all()
+        queryset1 = Person.objects.all()
+        owner = request.GET['username']
+        licker = request.GET['licker']
+        points = request.GET['points']
+        uid = Person.objects.filter(username= owner).values("user_id")[0]["user_id"]
+        lid = Person.objects.filter(username= licker).values("user_id")[0]["user_id"]
+        try:
+            t = Points.objects.get(owner_id=uid,reciever_id=lid)
+            x = int(t.points)
+            x +=int(points)
+            t.points = x
+            t.save()
+        except Exception as e:
+            u = Person(user_id = uid)
+            l = Person(user_id = lid)
+            p = Points(owner_id=u,reciever_id=l,points=points)
+            p.save()
         return Response(serializers.serialize('json',queryset))
 
 
