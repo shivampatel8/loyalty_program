@@ -62,7 +62,7 @@ class ExampleView(APIView):
         }
         return Response(content)
 
-
+#comethin
 @permission_classes((permissions.AllowAny,))
 class GetPoints(APIView):
     def get(self,request,format=None):
