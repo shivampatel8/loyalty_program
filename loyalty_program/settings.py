@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     # 'loyalty.apps.LoyaltyConfig',
     'rest_framework',
     'loyalty',
-    'herokuapp',
+    # 'herokuapp',
 
 ]
 
