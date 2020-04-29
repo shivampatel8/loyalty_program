@@ -75,9 +75,28 @@ class GetPoints(APIView):
         uid = Person.objects.filter(username= owner).values("user_id")[0]["user_id"]
         print(uid)
         if owner is not None:
+            #queryset = Points.objects.filter(username=owner)
+            #print(queryset.query)
+            #print(Points.objects.select_related('owner_id'))
+            #a = Points.objects.filter(owner_id_id__user_id=uid)
+            #print(a.query)
             queryset = queryset.filter(owner_id=int(uid))
+            print(queryset)
+            output_list = []
+            for i in queryset:
+                print(i.reciever_id.username)
+                output_list.append({'reciever':i.reciever_id.username,'points':i.points})
+            print(output_list)
+            #a = Person.objects.raw('SELECT * FROM myapp_person inner join myapp_points using myapp_person.user_id = myapp_points.owner_id' )
+            #print(a)
+        print('points')
         print(PointSerializer(queryset))
-        return Response(serializers.serialize('json',queryset))
+        print('queryset')
+        print(queryset)
+        print('json serializer')
+        print(serializers.serialize('json',queryset))
+        #Response(serializers.serialize('json',queryset))
+        return Response(output_list)
 
 @permission_classes((permissions.AllowAny,))
 class AllPoints(APIView):
