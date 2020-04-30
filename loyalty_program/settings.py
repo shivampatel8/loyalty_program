@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['loyalty30.herokuapp.com','127.0.0.1','localhost']
 
 #CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = (
@@ -53,11 +53,10 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
-#CORS_ORIGIN_WHITELIST = (
- #      'http://localhost:3000'
-        #'http://dharmishshah.herokuapp.com',
-        #'http://www.dharmishshah.com'
-#)
+
+
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000',
+      'http://loyalty30.herokuapp.com')
 
 # Application definition
 

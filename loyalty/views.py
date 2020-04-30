@@ -12,7 +12,7 @@ from django.core import serializers
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 
-
+import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -85,7 +85,7 @@ class GetPoints(APIView):
             output_list = []
             for i in queryset:
                 print(i.reciever_id.username)
-                output_list.append({'reciever':i.reciever_id.username,'points':i.points})
+                output_list.append({'receiver':i.reciever_id.username,'points':i.points})
             print(output_list)
             #a = Person.objects.raw('SELECT * FROM myapp_person inner join myapp_points using myapp_person.user_id = myapp_points.owner_id' )
             #print(a)
@@ -95,8 +95,9 @@ class GetPoints(APIView):
         print(queryset)
         print('json serializer')
         print(serializers.serialize('json',queryset))
-        #Response(serializers.serialize('json',queryset))
-        return Response(output_list)
+        #return Response(serializers.serialize('json',queryset))
+        json_str = json. dumps(output_list)
+        return Response(json_str)
 
 @permission_classes((permissions.AllowAny,))
 class AllPoints(APIView):
