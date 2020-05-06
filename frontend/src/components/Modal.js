@@ -1,79 +1,66 @@
 // frontend/src/components/Modal.js
 
-    import React, { Component } from "react";
-    import {
-      Button,
-      Modal,
-      ModalHeader,
-      ModalBody,
-      ModalFooter,
-      Form,
-      FormGroup,
-      Input,
-      Label
-    } from "reactstrap";
+import React, { Component } from "react";
 
-    export default class CustomModal extends Component {
-      constructor(props) {
+import axios from "axios";
+
+export default class CheckPoints extends Component{
+    constructor(props) {
         super(props);
         this.state = {
-          activeItem: this.props.activeItem
+            todoList:[],
+            username: ''
         };
-      }
-      handleChange = e => {
-        let { name, value } = e.target;
-        if (e.target.type === "checkbox") {
-          value = e.target.checked;
-        }
-        const activeItem = { ...this.state.activeItem, [name]: value };
-        this.setState({ activeItem });
-      };
-      render() {
-        const { toggle, onSave } = this.props;
-        return (
-          <Modal isOpen={true} toggle={toggle}>
-            <ModalHeader toggle={toggle}> Todo Item </ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <Label for="title">Title</Label>
-                  <Input
-                    type="text"
-                    name="title"
-                    value={this.state.activeItem.title}
-                    onChange={this.handleChange}
-                    placeholder="Enter Todo Title"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="description">Description</Label>
-                  <Input
-                    type="text"
-                    name="description"
-                    value={this.state.activeItem.description}
-                    onChange={this.handleChange}
-                    placeholder="Enter Todo description"
-                  />
-                </FormGroup>
-                <FormGroup check>
-                  <Label for="completed">
-                    <Input
-                      type="checkbox"
-                      name="completed"
-                      checked={this.state.activeItem.completed}
-                      onChange={this.handleChange}
-                    />
-                    Completed
-                  </Label>
-                </FormGroup>
-              </Form>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="success" onClick={() => onSave(this.state.activeItem)}>
-                Save
-              </Button>
-            </ModalFooter>
-          </Modal>
-        );
-      }
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    mySubmitHandler = (event) => {
+        event.preventDefault();
+        axios
+            .get("http://127.0.0.1:8000/loyalty/getPoints/?username="+this.state.username)
+            .then(res => {
+
+
+                    const myObject = JSON.parse(res.data);
+                    this.setState({ todoList: myObject });
+                    const items = myObject.map((item, key) =>
+                        <li key={item.id}>{item.name}</li>)
+                console.log(this.state.username)
+                console.log(this.state.todoList)
+                }
+            )
+
+    }
+    handleChange (evt) {
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
+    renderItems = () => {
+        const newItems = this.state.todoList
+        return newItems.map(item => (
+
+            <li
+                key={item.receiver}
+                className="list-group-item d-flex justify-content-between align-items-center"
+            >
+                {item.receiver + " " + item.points}
+            </li>
+        ));
+    }
+
+    render() {
+        return (
+            <div>
+            <form onSubmit={this.mySubmitHandler}>
+                <label>
+                    Username:
+                    <input type="text" name="username" onChange={this.handleChange}/>
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        <ul>
+            {this.renderItems()}
+        </ul>
+    </div>
+        );
+    }
+}
